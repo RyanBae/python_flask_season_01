@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{title}}</title>
+</head>
+<body>
+    <div><h3>Triplet Members <span>({{dataType}})</span></h3></div>
+    <table>
+        <thead>
+            <tr>
+                <td>no.</td>
+                <td>이름</td>
+                <td>나이</td>
+                <!-- <td>등록일</td> -->
+                <!-- <td>삭제일</td> -->
+            </tr>
+        </thead>
+        <tbody>
+            {% for member in members %}
+            <tr>
+                <td onclick="location.href='/view_form?id={{member.id}}'" style="cursor: pointer;">{{member.id}}</td>
+                <td onclick="location.href='/view_form?id={{member.id}}'" style="cursor: pointer;">{{member.name}}</td>
+                <td onclick="location.href='/view_form?id={{member.id}}'" style="cursor: pointer;">{{member.age}}</td>
+                <!-- <td onclick="location.href='/view_form?id={{member.id}}'" style="cursor: pointer;">{{member.create_datetime}}</td> -->
+                <!-- <td onclick="location.href='/view_form?id={{member.id}}'" style="cursor: pointer;">{{member.delete_datetime}}</td> -->
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    <a href="/"><button>Home</button></a>
+    <a href="/view_form"><button>등록페이지</button></a>
+</body>
+</html>
