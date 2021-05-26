@@ -8,11 +8,13 @@ import base64
 import os
 from werkzeug.utils import secure_filename
 from models.Members import Members
+from flask_socketio import SocketIO
+import cv2
 
 STATIC_FOLDER = 'assets'
 app = Flask(__name__, static_folder=STATIC_FOLDER)
 app.secret_key = 'some_secret'
-
+socketio = SocketIO(app)
 
 init_db()
 # Base.metadata.create_all(bind=engine)
@@ -124,6 +126,19 @@ def get_member_image_file():
 
     result = {'imageName': member.image_file}
     return result
+
+
+@app.route('/video')
+def video_stream():
+    return render_template('stream.html', title=title)
+
+
+@socketio.on('streaming')
+def handle_event(json, methods=['GET', 'POST']):
+    print("Received :: "+json['img'])
+    # cv2.imshow('streaming_img', json['img'])
+    # print("Received :: "+json)
+    # socketio.emit('received', 'test')
 
 
 def file_upload(req):
