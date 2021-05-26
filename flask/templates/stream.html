@@ -4,34 +4,50 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
-    <script src="https://code.jquery.com/jquery-migrate-3.3.2.js"></script>
+    <!-- <script src="//code.jquery.com/jquery-1.11.3.min.js"></script> -->
+    <!-- <script src="https://code.jquery.com/jquery-migrate-3.3.2.js"></script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script> -->
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script> -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
     <title>{{title}}</title>
 </head>
 <body>
     Streamimg Page
-    <div>
-
+    <div class="str-img-div">
+        <img id="str-img" src="" alt="" width="50%" height="50%">
     </div>
 </body>
 
+<!-- let socket = io.connect('http://'+document.domain+':'+location.port); -->
+<!-- socket.on('connect',(msg)=>{
+    console.log("???")
+})
+socket.on('streaming', function(msg){
+    console.log("Connect")
+    console.log(msg)
+    socket.on('received', 'test')
+}) -->
+<!-- let socket = io.connect('http://'+document.domain+':'+location.port+''); -->
+<!-- socket.on('connection', function(soi){
+    console.log(soi)
+}) -->
+<!-- console.log(res) -->
 <script>
-
-    console.log('http://'+document.domain+':'+location.port)
-    var socket = io.connect('http://'+document.domain+':'+location.port);
-    
-    socket.on('connect', function(){
-        console.log("Connect")
-        socket.on('received', 'test')
-    })
-
-    
     $(function(){
+        console.log('http://'+document.domain+':'+location.port)
+        let socket = io.connect('http://'+document.domain+':'+location.port)
+        console.log(socket)
+        socket.on('connect', function(){
+            console.log(socket)
+        })
 
-
-    });
+        socket.on('view',function(res){
+            $('#str-img').attr('src','data:image/jpeg;base64,'+res)
+        
+        })
+    
+    })
 
 
 </script>

@@ -133,12 +133,25 @@ def video_stream():
     return render_template('stream.html', title=title)
 
 
+@socketio.event
+def connect():
+    print('==> Flask SocketIO Connect ! ')
+    socketio.emit('received', 'flask Connect !')
+
+
+# @socketio.on('connect')
+# def connect():
+#     print('Flask SocketIO Connect ! 22222')
+    # socketio.emit('received', 'flask Connect')
+
+
 @socketio.on('streaming')
 def handle_event(json, methods=['GET', 'POST']):
-    print("Received :: "+json['img'])
+    # print("Received :: "+json['img'])
     # cv2.imshow('streaming_img', json['img'])
     # print("Received :: "+json)
     # socketio.emit('received', 'test')
+    socketio.emit('view', json['img'])
 
 
 def file_upload(req):
@@ -167,4 +180,5 @@ def row_insert_to_add_text(member):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    # socketio.run(app)
+    app.run(debug=True, host='127.0.0.1', port='5000')
