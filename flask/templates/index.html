@@ -7,13 +7,13 @@
     <title>{{title}}</title>
 </head>
 <body>
-    {% with messages = get_flashed_messages() %}
+    <!-- {% with messages = get_flashed_messages() %}
         {% if messages %}
             <script>
                 alert("{{messages[-1]}}")
             </script>
         {% endif %}
-    {% endwith %}   
+    {% endwith %}    -->
 
     <div><h3>Hello Flask World</h3></div>
     <div>
@@ -21,7 +21,10 @@
        <a href="/list?type=0"><button>List(DB)</button></a>
        <a href="/list?type=1"><button>List(TEXT)</button></a>
        <a href="/view_form"><button>등록페이지</button></a>
-       <a href="/video"><button>영상 스트리밍</button></a>
+       <br><br>
+       <h5>Video Streaming</h5> 
+       <a href="/stream"><button>영상 스트리밍(socket)</button></a>
+       <a href="/video"><button>영상 스트리밍(yield)</button></a>
     </div>
     
 </body>

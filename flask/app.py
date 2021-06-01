@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, Response
 from flask_sqlalchemy import SQLAlchemy
 from database import init_db
 from database import db_session, Base, engine
@@ -10,6 +10,7 @@ from werkzeug.utils import secure_filename
 from models.Members import Members
 from flask_socketio import SocketIO
 import cv2
+from video import video
 
 STATIC_FOLDER = 'assets'
 app = Flask(__name__, static_folder=STATIC_FOLDER)
@@ -25,7 +26,7 @@ image_path = './assets/image'
 
 @app.route('/')
 def index():
-    flash("환영합니다!!!")
+    # flash("환영합니다!!!")
     return render_template('index.html', title=title)
 
 
@@ -129,14 +130,41 @@ def get_member_image_file():
 
 
 @app.route('/video')
+def video_page():
+    print("Video")
+    return render_template('stream.html', title=title, type='1')
+
+
+def gen(video):
+    while True:
+        # get camera frame
+        frame = video.get_frame()
+        yield (b'--frame\r\n'
+               b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
+
+
+@app.route('/video_feed')
+def video_feed():
+    return Response(gen(video()),
+                    mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+@app.route('/stream')
 def video_stream():
-    return render_template('stream.html', title=title)
+    print("Video Streaming")
+    return render_template('stream.html', title=title, type='0')
 
 
 @socketio.event
 def connect():
     print('==> Flask SocketIO Connect ! ')
     socketio.emit('received', 'flask Connect !')
+
+
+@socketio.event
+def disconnect():
+    print(" Socket IO disConnect !!!")
+    socketio.emit('disconnected', 'disconnect')
 
 
 # @socketio.on('connect')
@@ -181,4 +209,5 @@ def row_insert_to_add_text(member):
 
 if __name__ == '__main__':
     # socketio.run(app)
-    app.run(debug=True, host='127.0.0.1', port='5000')
+    # app.run(debug=True, host='127.0.0.1', port='5000')
+    app.run(debug=True, host='0.0.0.0', port='5000')
