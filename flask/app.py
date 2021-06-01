@@ -167,12 +167,6 @@ def disconnect():
     socketio.emit('disconnected', 'disconnect')
 
 
-# @socketio.on('connect')
-# def connect():
-#     print('Flask SocketIO Connect ! 22222')
-    # socketio.emit('received', 'flask Connect')
-
-
 @socketio.on('streaming')
 def handle_event(json, methods=['GET', 'POST']):
     # print("Received :: "+json['img'])
