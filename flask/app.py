@@ -129,10 +129,19 @@ def get_member_image_file():
     return result
 
 
-@app.route('/video')
-def video_page():
-    print("Video")
-    return render_template('stream.html', title=title, type='1')
+# @app.route('/video', methods=['GET'])
+@app.route('/video/<int:page_type>', methods=['GET'])
+def video_page(page_type):
+    # paramMap = {}
+    # if request.method == 'GET':
+    #     if len(request.args.to_dict()) != 0:
+    #         for key in request.args.to_dict().keys():
+    #             paramMap = {key: request.args[key]}
+
+    # print(paramMap)
+    return render_template('stream.html', title=title, type=str(page_type))
+
+# yield
 
 
 def gen(video):
@@ -143,10 +152,25 @@ def gen(video):
                b'Content-Type: image/jpeg\r\n\r\n' + frame + b'\r\n\r\n')
 
 
-@app.route('/video_feed')
-def video_feed():
-    return Response(gen(video()),
-                    mimetype='multipart/x-mixed-replace; boundary=frame')
+@app.route('/video_feed/<int:feed_type>')
+def video_feed(feed_type):
+    return Response(gen(video(feed_type)), mimetype='multipart/x-mixed-replace; boundary=frame')
+
+
+# url_for test
+@app.route('/url_for_t')
+def url_for_test():
+    print('test!!!!!')
+    # print(Response('response', mimetype='text/html;'))
+    get_img = cv2.imread('./assets/image/zaid_con.jpg', cv2.IMREAD_ANYCOLOR)
+    img = cv2.cvtColor(get_img, cv2.IMREAD_COLOR)
+    ret, jpg_img = cv2.imencode('.jpg', img)
+    # imshow('test', img)
+    print(jpg_img.tobytes())
+    return Response(b'--frame\r\n'b'Content-Type:image/jpeg\r\n\r\n'+jpg_img.tobytes()+b'\r\n\r\n', mimetype='multipart/x-mixed-replace; boundary=frame')
+    # return 'response'
+
+# socket
 
 
 @app.route('/stream')
@@ -169,10 +193,6 @@ def disconnect():
 
 @socketio.on('streaming')
 def handle_event(json, methods=['GET', 'POST']):
-    # print("Received :: "+json['img'])
-    # cv2.imshow('streaming_img', json['img'])
-    # print("Received :: "+json)
-    # socketio.emit('received', 'test')
     socketio.emit('view', json['img'])
 
 

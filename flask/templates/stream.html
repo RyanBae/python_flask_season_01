@@ -1,67 +1,69 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <!-- <script src="//code.jquery.com/jquery-1.11.3.min.js"></script> -->
     <!-- <script src="https://code.jquery.com/jquery-migrate-3.3.2.js"></script> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script> -->
     <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.1.1/socket.io.js"></script> -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
+      integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
+      crossorigin="anonymous"
+    ></script>
     <title>{{title}}</title>
-</head>
-<style>
-    .display-none{
-        display: none;
+  </head>
+  <style>
+    .display-none {
+      display: none;
     }
-
-</style>
-<body>
+  </style>
+  <body>
     <h5>Streamimg Page</h5>
     <div class="str-img-div">
-        {% if type == '0' %}
-            <span>Socket</span><br>
-            <img class="display-none" id="str-img" src="" alt="" width="50%" height="50%">
-        {% else %}
-            <span>Yield</span><br>
-            <img id="str" src="{{ url_for('video_feed') }}" alt="" width="50%" height="50%">
-        {% endif %}
+      {% if type == '0' %}
+      <span>Socket</span><br />
+      <img class="display-none" id="str-img" src="" alt="" width="50%" height="50%" />
+      {% elif type == '1' %}
+      <span>Yield (Video)</span><br />
+      <img id="str" src="{{ url_for('video_feed', feed_type=0) }}" alt="" width="50%" height="50%" />
+      {% else %}
+      <span>Yield (Camera)</span><br />
+      <img id="str" src="{{ url_for('video_feed', feed_type=1) }}" alt="" width="50%" height="50%" />
+
+      {% endif %}
     </div>
-</body>
+    <a href="{{ url_for('index') }}"><button>Home</button></a>
+  </body>
 
-<script>
-    $(function(){
-        let type = '{{type}}';
-        console.log(type)
-        if(type === '0'){
-            console.log('http://'+document.domain+':'+location.port)
-            let socket = io.connect('http://'+document.domain+':'+location.port)
-            console.log(socket)
-            socket.on('connect', function(){
-                console.log(socket)
-            })
-    
-            socket.on('view',function(res){
-                if($('#str-img').hasClass('display-none')){
-                    $('#str-img').removeClass('display-none')
-                }
-                $('#str-img').attr('src','data:image/jpeg;base64,'+res)
-            
-            })
-    
-            socket.on('disconnected', function(){
-                console.log("DisConnect")
-                $('#str-img').attr('src','')
-                $('#str-img').addClass('display-none')
-            })
+  <script>
+    $(function () {
+      let type = "{{type}}";
+      console.log(type);
+      console.log("http://" + document.domain + ":" + location.port);
+      let socket = io.connect(
+        "http://" + document.domain + ":" + location.port
+      );
+      console.log(socket);
+      socket.on("connect", function () {
+        console.log(socket);
+      });
 
+      socket.on("view", function (res) {
+        if ($("#str-img").hasClass("display-none")) {
+          $("#str-img").removeClass("display-none");
         }
-    
-    })
+        $("#str-img").attr("src", "data:image/jpeg;base64," + res);
+      });
 
-
-</script>
-
+      socket.on("disconnected", function () {
+        console.log("DisConnect");
+        $("#str-img").attr("src", "");
+        $("#str-img").addClass("display-none");
+      });
+    });
+  </script>
 </html>
