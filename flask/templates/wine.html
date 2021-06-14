@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Linear Regression</title>
+</head>
+<style>
+    input{
+        width: 50px;
+        float: right;
+    }
+    .warp > div{
+        margin-top: 3px;
+    }
+
+</style>
+<body>
+    <h5>Streamimg Page</h5>
+
+<!-- 
+# fixed acidity : 고정 산도
+# volatile acidity : 휘발성 산도 *
+# citric acid : 시트르산 *
+# residual sugar : 잔류 설탕
+# chlorides : 염화물 *
+# free sulfur dioxide : 자유 이산화황
+# total sulfur dioxide : 총 이산화황
+# density : 밀도
+# pH : pH
+# sulphates : 황산염 *
+# alcohol : 알코올 * 
+# quality : 품질   # 종속변수 -->
+<form action="" method="POST" enctype="multipart/form-data">
+    <div class="warp" style="display: flex; flex-direction: column; width:170px">
+        <div>
+            : 고정 산도<input type="text" name="fixedAcidity"> 
+        </div>
+        <div>
+            : 휘발성 산도 <input type="text" name="volatileAcidity"> 
+        </div>
+        <div>
+            : 시트르산 <input type="text" name="citricAcid"> 
+        </div>
+        <div>
+            : 잔류 설탕 <input type="text" name="residualSugar"> 
+        </div>
+        <div>
+            : 염화물 <input type="text" name="chlorides"> 
+        </div>
+        <div>
+            : 자유 이산화황 <input type="text" name="freeSulfurDioxide"> 
+        </div>
+        <div>
+        : 총 이산화황 <input type="text" name="totalSulfurDioxide"> 
+        </div>
+        <div>
+        : 밀도 <input type="text" name="density"> 
+        </div>
+        <div>
+        : pH <input type="text" name="pH"> 
+        </div>
+        <div>
+        : 황산염 <input type="text" name="sulphates"> 
+        </div>
+        <div>
+        : 알코올 <input type="text" name="alcohol"> 
+        </div>
+        <div>
+            <button style="float: right;" type="submit">Submit</button>
+           
+        </div>
+    </div>
+</form>
+
+{% if value %}
+<hr style="width: 170px; float: left;"><br>
+<div>
+   
+    <h3>결과 : {{value}}</h3>
+</div>
+<div style="width: 170px;">
+    <a style="float: right;" href="/linear"><button type="button">초기화</button></a>
+</div>
+{% endif %}
+
+</body>
+</html>

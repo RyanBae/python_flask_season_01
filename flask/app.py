@@ -113,6 +113,17 @@ def view_form():
         return redirect('/list?type=0')
 
 
+@app.route('/linear', methods=['GET', 'POST'])
+def linear_input_page():
+    if request.method == 'GET':
+        return render_template('wine.html')
+    elif request.method == 'POST':
+        print("> Methods : POST")
+        print(request.form['fixedAcidity'])
+        # print(request['fixedAcidity'])
+    
+        return render_template('wine.html', value="test")
+
 @app.route('/getImage', methods=['POST'])
 def get_member_image_file():
     member = db_session.query(Members).filter(
